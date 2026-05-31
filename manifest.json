@@ -1,0 +1,28 @@
+{
+  "name": "Formation Pro — IA, Finance & Copywriting",
+  "short_name": "Formation Pro",
+  "description": "Maîtrise professionnelle : IA & Automatisation, Finance, Copywriting. Cours générés par Claude, quiz actif, outils IA live.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#07070E",
+  "background_color": "#07070E",
+  "lang": "fr",
+  "categories": ["education", "productivity", "business"],
+  "icons": [
+    {"src":"icon-72.png","sizes":"72x72","type":"image/png"},
+    {"src":"icon-96.png","sizes":"96x96","type":"image/png"},
+    {"src":"icon-128.png","sizes":"128x128","type":"image/png"},
+    {"src":"icon-144.png","sizes":"144x144","type":"image/png"},
+    {"src":"icon-152.png","sizes":"152x152","type":"image/png"},
+    {"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"icon-384.png","sizes":"384x384","type":"image/png"},
+    {"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ],
+  "shortcuts": [
+    {"name":"Pilier IA","url":"/?p=p1","description":"IA & Automatisation"},
+    {"name":"Pilier Finance","url":"/?p=p2","description":"Finance & Stratégie"},
+    {"name":"Copywriting","url":"/?p=p3","description":"Copywriting Stratégique"}
+  ]
+}

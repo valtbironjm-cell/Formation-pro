@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#07070E">
+  <meta name="description" content="Formation Pro — IA, Finance & Copywriting. Cours Claude, quiz actif, outils IA live.">
+  <link rel="manifest" href="manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Formation Pro">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icon-152.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+  <title>Formation Pro</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; background: #07070E; }
+    body {
+      font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior: none;
+      color: #C8C8E0;
+    }
+    #root { min-height: 100vh; min-height: -webkit-fill-available;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom); }
+
+    /* Splash */
+    #splash {
+      position: fixed; inset: 0; background: #07070E; z-index: 9999;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: opacity 0.5s ease;
+    }
+    .sp-bolt { font-size: 54px; animation: bob 1.1s ease-in-out infinite alternate; margin-bottom: 16px; }
+    @keyframes bob { from { transform: scale(1); } to { transform: scale(1.07) translateY(-4px); } }
+    .sp-name { color: #fff; font-size: 24px; font-weight: 900; letter-spacing: -0.8px; }
+    .sp-tag { color: #2A2A3A; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-top: 6px; }
+    .sp-bar { width: 140px; height: 3px; background: #111; border-radius: 2px; margin-top: 28px; overflow: hidden; }
+    .sp-fill { height: 100%; background: linear-gradient(90deg,#00D4FF,#FFB800,#FF4D6D); border-radius: 2px; animation: fillup 1.4s cubic-bezier(.4,0,.2,1) forwards; }
+    @keyframes fillup { from { width: 0; } to { width: 100%; } }
+
+    /* Install banner */
+    #ib { position: fixed; bottom: max(16px,env(safe-area-inset-bottom)); left: 12px; right: 12px;
+      background: #0C0C1A; border: 1px solid #15152A; border-radius: 12px;
+      padding: 12px 14px; z-index: 400; box-shadow: 0 8px 32px rgba(0,0,0,.7);
+      display: none; align-items: center; gap: 10px; }
+    #ib.show { display: flex; animation: sup .3s ease; }
+    @keyframes sup { from { transform: translateY(20px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+    /* Update banner */
+    #ub { position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      background: #FFB800; color: #000; text-align: center;
+      padding: 10px; font-size: 12px; font-weight: 700;
+      display: none; cursor: pointer; }
+    #ub.show { display: block; }
+
+    /* Range inputs */
+    input[type=range] { -webkit-appearance: none; appearance: none; height: 4px; background: #1A1A2E; border-radius: 2px; outline: none; cursor: pointer; width: 100%; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #FFB800; border: 2px solid #07070E; cursor: pointer; }
+    input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: #FFB800; border: 2px solid #07070E; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-thumb { background: #1A1A2E; border-radius: 2px; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div id="splash">
+    <div class="sp-bolt">⚡</div>
+    <div class="sp-name">Formation Pro</div>
+    <div class="sp-tag">IA · Finance · Copywriting</div>
+    <div class="sp-bar"><div class="sp-fill"></div></div>
+  </div>
+
+  <div id="ub" onclick="location.reload()">🔄 Mise à jour disponible — Toucher pour actualiser</div>
+
+  <div id="ib">
+    <div style="font-size:26px;flex-shrink:0">⚡</div>
+    <div style="flex:1">
+      <div style="color:#fff;font-size:12px;font-weight:700">Installer Formation Pro</div>
+      <div style="color:#44445A;font-size:10px;margin-top:2px">Accès direct · Hors-ligne</div>
+    </div>
+    <button onclick="doInstall()" style="padding:7px 14px;background:#00D4FF;color:#000;border:none;border-radius:6px;cursor:pointer;font-family:inherit;font-size:11px;font-weight:700">Installer</button>
+    <button onclick="dismissIB()" style="background:transparent;border:none;color:#333;font-size:18px;cursor:pointer;padding:0 4px">✕</button>
+  </div>
+
+  <div id="root"></div>
+
+  <!-- React 18 (no JSX needed — pre-compiled) -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+
+  <!-- Pre-compiled app (no Babel at runtime) -->
+  <!-- Course data (no API needed) -->
+  <script src="course_data.js"></script>
+  <script src="advanced_data.js"></script>
+
+  <!-- Pre-compiled app -->
+  <script src="app.compiled.js"></script>
+
+  <script>
+    // Hide splash once React renders
+    const obs = new MutationObserver(() => {
+      if (document.getElementById('root').children.length > 0) {
+        const s = document.getElementById('splash');
+        if (s) { s.style.opacity = '0'; setTimeout(() => s.remove(), 500); }
+        obs.disconnect();
+      }
+    });
+    obs.observe(document.getElementById('root'), { childList: true });
+    // Fallback: hide after 5s no matter what
+    setTimeout(() => {
+      const s = document.getElementById('splash');
+      if (s) { s.style.opacity = '0'; setTimeout(() => s.remove(), 500); }
+    }, 5000);
+
+    // Service Worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').then(reg => {
+        reg.addEventListener('updatefound', () => {
+          reg.installing.addEventListener('statechange', function() {
+            if (this.state === 'installed' && navigator.serviceWorker.controller)
+              document.getElementById('ub').classList.add('show');
+          });
+        });
+      });
+      navigator.serviceWorker.addEventListener('controllerchange', () => location.reload());
+    }
+
+    // Install prompt
+    let deferred = null;
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault(); deferred = e;
+      if (!localStorage.getItem('fp_no_install'))
+        setTimeout(() => document.getElementById('ib').classList.add('show'), 5000);
+    });
+    function doInstall() { document.getElementById('ib').classList.remove('show'); if (deferred) { deferred.prompt(); deferred = null; } }
+    function dismissIB() { document.getElementById('ib').classList.remove('show'); localStorage.setItem('fp_no_install','1'); }
+    window.addEventListener('appinstalled', () => document.getElementById('ib').classList.remove('show'));
+
+    // Viewport height fix
+    const setVH = () => document.documentElement.style.setProperty('--vh', window.innerHeight * .01 + 'px');
+    setVH(); window.addEventListener('resize', setVH);
+  </script>
+</body>
+</html>
